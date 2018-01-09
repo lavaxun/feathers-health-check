@@ -1,17 +1,20 @@
 const feathers = require('@feathersjs/feathers');
 const express = require('@feathersjs/express');
+const requestObj = require('request');
+
 const mongoose = require('./mongoose');
 var healthCheck = require('../lib/index');
-var path = require('path');
 
 const mongoURI = 'mongodb://localhost:27017/local';
 const mongooseConfigKey = 'mongooseClient';
 
 // Initialize the application
-const app = express(feathers())
-  .use('/healthz', healthCheck.mongo(mongooseConfigKey));
+const app = express(feathers());
+app.configure(express.rest());
+app.use('/healthz', healthCheck.mongo(mongooseConfigKey));
+app.use('/ping', healthCheck.http('http://google.com'));
+app.use('/multi', healthCheck.multi([healthCheck.mongo(mongooseConfigKey), healthCheck.http('http://google.com')]));
 app.configure(mongoose(mongoURI));
-
 
 const mongooseClient = app.get(mongooseConfigKey);
 var healthService = app.service('healthz');
@@ -36,10 +39,36 @@ mongooseClient.connection.on('disconnected', function (disconnected) {
   });
 });
 
-// after two seconds disconnect from mongo
+// after 2.5 seconds disconnect from mongo
 setTimeout(function() {
   mongooseClient.disconnect();
+}, 2500);
+
+// after 2 seconds ping health endpoint
+setTimeout(function () {
+  requestObj('http://localhost:3030/ping', function(err, res, body) {
+    if(err) {
+      console.log('[unexpected] system is offline');
+      return;
+    }
+
+    console.log('[expected] system is online');
+  });
+}, 2000);
+
+
+// after 1.5 seconds ping health endpoint
+setTimeout(function () {
+  requestObj('http://localhost:3030/multi', function (err, res, body) {
+    if (res.statusCode >= 200 && res.statusCode < 300) {
+      console.log('[expected] system is healthy');
+      return;
+    }
+
+    console.log('[unexpected] system is not healthy');
+  });
 }, 1500);
+
 
 app.listen(3030);
 

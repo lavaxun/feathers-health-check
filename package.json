@@ -2,7 +2,7 @@
   "name": "feathers-health-check",
   "description": "a plugin to perform healthcheck for feathers application",
   "version": "0.1.0",
-  "homepage": "https://github.com/axnux/health-check",
+  "homepage": "https://github.com/axnux/feathers-health-check",
   "main": "lib/",
   "keywords": [
     "feathers",
@@ -11,7 +11,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/axnux/health-check.git"
+    "url": "git://github.com/axnux/feathers-health-check.git"
   },
   "author": {
     "name": "axnux",
@@ -20,7 +20,7 @@
   },
   "contributors": [],
   "bugs": {
-    "url": "https://github.com/axnux/health-check/issues"
+    "url": "https://github.com/axnux/feathers-health-check/issues"
   },
   "engines": {
     "node": ">= 6.0.0"

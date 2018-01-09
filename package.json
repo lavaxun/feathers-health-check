@@ -1,7 +1,7 @@
 {
   "name": "health-check",
   "description": "a plugin to perform healthcheck for feathers application",
-  "version": "0.2.0",
+  "version": "0.0.0",
   "homepage": "https://github.com/axnux/health-check",
   "main": "lib/",
   "keywords": [
@@ -14,7 +14,7 @@
     "url": "git://github.com/axnux/health-check.git"
   },
   "author": {
-    "name": "Lian Xun",
+    "name": "axnux",
     "email": "me@xun.com.my",
     "url": "http://xun.com.my"
   },
